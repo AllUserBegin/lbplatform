@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.erp.dao">
+    <select id="queryList" resultType="map">
+        select * from users
+
+        order by AddTime desc
+
+            limit #{offset}, #{limit}
+
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from users
+    </select>
+</mapper>

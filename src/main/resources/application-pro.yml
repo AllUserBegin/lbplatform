@@ -1,0 +1,11 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /pro
+      pageSize: 20
+      devName: 紫色飞雪
+      content: "pageSize:${server.pageSize}},devName:${server.devName}}"
+      dev:
+        name: 紫陌飞雪
+        age: 26
+        id: 365
