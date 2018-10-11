@@ -26,10 +26,4 @@ public class UserAddReq {
    public Integer age;
 }
 
-@Data
-public  class  UserModifyReq extends  UserAddReq
-{
-    @NotBlank(message = "ID不能为空哟")
-    @ApiModelProperty(value = "ID",required = true)
-    private Integer id;
-}
+
