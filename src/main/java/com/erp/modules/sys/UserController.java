@@ -1,4 +1,4 @@
-package com.erp.controller;
+package com.erp.modules.sys;
 import com.erp.dto.request.UserModifyReq;
 import com.github.pagehelper.PageInfo;
 import com.erp.common.utils.ApiResult;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
+@RequestMapping(value = "/sys/user", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
 @Api(description = "用户管理")
 public class UserController {
 
@@ -100,9 +100,4 @@ public class UserController {
 
         return ApiResult.Success(pageInfo.getTotal(),list);
     }
-
-
-
-
-
 }

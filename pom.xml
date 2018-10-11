@@ -33,13 +33,31 @@
         <lombok.version>1.16.10</lombok.version>
         <commons.lang.version>2.6</commons.lang.version>
         <fastjson.version>1.2.49</fastjson.version>
+        <shiro.version>1.4.0</shiro.version>
     </properties>
 
     <dependencies>
+        <!-- Shiro权限 -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -56,7 +74,10 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -90,6 +111,7 @@
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>${mapper.version}</version>
         </dependency>
+
         <!--热部署插件-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
