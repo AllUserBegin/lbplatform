@@ -1,4 +1,4 @@
-package com.erp.common.shiro;
+package com.erp.shiro;
 
 import com.erp.common.exception.RRException;
 import com.erp.entity.UsersBean;
@@ -7,13 +7,16 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
-/**
+/*
  * Shiro工具类
-  */
+ */
+
 public class ShiroUtils {
-    /**  加密算法 */
+/*  加密算法 */
+
     public final static String hashAlgorithmName = "SHA-256";
-    /**  循环次数 */
+    /* 循环次数 */
+
     public final static int hashIterations = 16;
 
     public static String sha256(String password, String salt) {

@@ -9,11 +9,11 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication //用来声明这是启动SpringBoot程序的启动类，必须有
-//@MapperScan("com.erp.dao")
 public class LbplatformApplication {
     public static void main(String[] args) {
         SpringApplication.run(LbplatformApplication.class, args);
     }
+
 
     //如果采用注解这种方式，感觉都可以不用放在这个地方
     //只要在spring容器启动的时候被扫描到就行了

@@ -1,4 +1,4 @@
-package com.erp.common.shiro;
+package com.erp.shiro;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;

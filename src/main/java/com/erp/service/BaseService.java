@@ -1,5 +1,6 @@
 package com.erp.service;
 
+import com.erp.entity.UsersBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.erp.common.MyMapper;
@@ -56,9 +57,14 @@ public abstract class BaseService<T,ID extends Serializable> {
         return baseMapper.selectOneByExample(example);
     }
 
+
+
     public List<T> queryByExample(Example example) {
         return baseMapper.selectByExample(example);
     }
+
+
+
 
     /**
      * 自定义查询条件，分页查询

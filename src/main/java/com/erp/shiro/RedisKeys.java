@@ -1,4 +1,4 @@
-package com.erp.common.shiro;
+package com.erp.shiro;
 
 public class RedisKeys {
 
