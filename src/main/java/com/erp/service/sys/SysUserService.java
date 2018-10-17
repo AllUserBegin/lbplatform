@@ -1,4 +1,5 @@
 package com.erp.service.sys;
+import com.erp.entity.sys.SysDeptBean;
 import com.erp.entity.sys.SysUserBean;
 import com.erp.service.BaseService;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,14 @@ public class SysUserService extends BaseService<SysUserBean,Long> {
 
 
     public SysUserBean GetInfo(SysUserBean  entity) {
+
         SysUserBean model = new SysUserBean();
-        return model;
+
+        Example example = new Example(SysUserBean.class);
+        example.createCriteria().andEqualTo("username",entity.getUsername());
+
+
+
+        return queryOneByExample(example);
     }
 }
