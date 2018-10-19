@@ -28,7 +28,7 @@ import java.util.List;
  * 
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-12 14:52:58
+ * @date 2018-10-18 16:01:31
  */
 @RestController
 @RequestMapping(value = "/sys/sysconfig", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
@@ -40,6 +40,7 @@ public class SysConfigController {
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysconfig:create")
     public ApiResult create(SysConfigCreateReq data)
     {
 			SysConfigBean entity=new SysConfigBean();
@@ -50,14 +51,13 @@ public class SysConfigController {
 
     @ApiOperation(value = "修改")
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysconfig:modify")
     public  ApiResult modify(SysConfigModifyReq data)
     {
         Example example = new Example(SysConfigBean.class);
         example.createCriteria().andEqualTo("id",data.id);
 
             SysConfigBean entity=sysConfigService.queryOneByExample(example);
-
-
 
 			sysConfigService.updateByPrimaryKey(entity);
         return ApiResult.Success("操作成功!");
@@ -66,6 +66,7 @@ public class SysConfigController {
 
     @ApiOperation(value = "删除")
     @RequestMapping(value = "/del", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysconfig:del")
     public ApiResult del(Long id)
     {
 			sysConfigService.deleteByPrimaryKey(id);
@@ -74,6 +75,7 @@ public class SysConfigController {
 
     @ApiOperation(value = "获取单条")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysconfig:info")
     public  ApiResult info(Long id)
     {
         Example example = new Example(SysConfigBean.class);

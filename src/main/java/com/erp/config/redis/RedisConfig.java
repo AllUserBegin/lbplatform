@@ -1,4 +1,4 @@
-package com.erp.config;
+package com.erp.config.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -14,9 +14,9 @@ import redis.clients.jedis.Jedis;
 /**
  * Redis配置
  *
- * @author Mark sunlightcs@gmail.com
- * @since 3.0.0 2017-07-07
+
  */
+
 @Configuration
 @ConditionalOnClass({JedisConnection.class, RedisOperations.class, Jedis.class})
 public class RedisConfig {

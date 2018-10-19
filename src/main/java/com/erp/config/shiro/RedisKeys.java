@@ -1,4 +1,4 @@
-package com.erp.shiro;
+package com.erp.config.shiro;
 
 public class RedisKeys {
 
@@ -7,6 +7,6 @@ public class RedisKeys {
     }
 
     public static String getShiroSessionKey(String key){
-        return "sessionid:" + key;
+        return "0:" + key;
     }
 }

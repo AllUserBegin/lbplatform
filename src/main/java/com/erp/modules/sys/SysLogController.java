@@ -1,8 +1,6 @@
 package com.erp.modules.sys;
 
 import com.erp.common.utils.ApiResult;
-import com.erp.common.utils.DateUtils;
-import com.erp.common.xss.SQLFilter;
 import com.erp.dto.reponse.sys.SysLogRep;
 import com.erp.dto.request.sys.SysLogCreateReq;
 import com.erp.dto.request.sys.SysLogModifyReq;
@@ -14,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ import java.util.List;
  * 
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-12 14:52:58
+ * @date 2018-10-18 16:01:31
  */
 @RestController
 @RequestMapping(value = "/sys/syslog", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
@@ -39,6 +38,7 @@ public class SysLogController {
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequiresPermissions("sys:syslog:create")
     public ApiResult create(SysLogCreateReq data)
     {
 			SysLogBean entity=new SysLogBean();
@@ -49,6 +49,7 @@ public class SysLogController {
 
     @ApiOperation(value = "修改")
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    @RequiresPermissions("sys:syslog:modify")
     public  ApiResult modify(SysLogModifyReq data)
     {
         Example example = new Example(SysLogBean.class);
@@ -65,6 +66,7 @@ public class SysLogController {
 
     @ApiOperation(value = "删除")
     @RequestMapping(value = "/del", method = RequestMethod.GET)
+    @RequiresPermissions("sys:syslog:del")
     public ApiResult del(Long id)
     {
 			sysLogService.deleteByPrimaryKey(id);
@@ -73,6 +75,7 @@ public class SysLogController {
 
     @ApiOperation(value = "获取单条")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequiresPermissions("sys:syslog:info")
     public  ApiResult info(Long id)
     {
         Example example = new Example(SysLogBean.class);
@@ -89,6 +92,7 @@ public class SysLogController {
                     @ApiImplicitParam(paramType ="query", name = "size", value = "每页显示条数", dataType = "String")
             })
     @ResponseBody()
+    @RequiresPermissions("sys:syslog:list")
     public ApiResult<List<SysLogRep>> GetSysLogList(
             @RequestParam(required = false,defaultValue = "1") Integer page,
             @RequestParam(required = false,defaultValue = "15") Integer size) {

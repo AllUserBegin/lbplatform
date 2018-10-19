@@ -1,10 +1,11 @@
 package com.erp.modules;
 
 import com.erp.common.utils.ApiResult;
-import com.erp.config.TokenGenerator;
-import com.erp.shiro.ShiroUtils;
 
-import com.google.code.kaptcha.Constants;
+
+import com.erp.config.shiro.TokenGenerator;
+import com.erp.entity.sys.SysUserBean;
+import com.erp.service.sys.SysUserService;
 import com.google.code.kaptcha.Producer;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -18,19 +19,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
 @RestController
 @RequestMapping(value = "/SysLogin", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
 public class SysLoginController {
     @Autowired
     private Producer producer;
 
-    @RequestMapping("captcha.jpg")
+    @Autowired
+    private SysUserService sysUserService;
+
+/*    @RequestMapping("captcha.jpg")
     public void captcha(HttpServletResponse response)throws IOException {
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
@@ -44,7 +42,7 @@ public class SysLoginController {
 
         ServletOutputStream out = response.getOutputStream();
         ImageIO.write(image, "jpg", out);
-    }
+    }*/
 
     /**
      * 登录
@@ -56,22 +54,25 @@ public class SysLoginController {
         if(!captcha.equalsIgnoreCase(kaptcha)){
             return ApiResult.Fail("验证码不正确");
         }*/
+        String passwordmd5 = new Md5Hash(password, "2").toString();
 
+        SysUserBean user = sysUserService.findByName(username);
+        if(null==user)
+        {
+            return ApiResult.Fail("用户不存在");
+        }
+
+        if(user.getPassword().equalsIgnoreCase(passwordmd5)==false)
+        {
+            return ApiResult.Fail("密码不正确");
+        }
+       /* String strToken=  TokenGenerator.generateValue(username+passwordmd5);*/
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), passwordmd5);
+        Subject currentUser = SecurityUtils.getSubject();
         try{
-
-
-            //生成token
-           /* String token = TokenGenerator.generateValue();
-
-            return  ApiResult.Success(token);*/
-
-            Subject subject = SecurityUtils.getSubject();
-            String passwordmd5 = new Md5Hash(password, "2").toString();
-            UsernamePasswordToken token = new UsernamePasswordToken(username,passwordmd5);
-            subject.login(token);
-
-
-           return  ApiResult.Success(token.toString());
+            currentUser.login(token);
+            //String sid= currentUser.getSession().getId().toString();
+             return  ApiResult.Success("登录成功",passwordmd5);
         }catch (UnknownAccountException e) {
             return ApiResult.Fail(e.getMessage());
         }catch (IncorrectCredentialsException e) {
@@ -79,10 +80,13 @@ public class SysLoginController {
         }catch (LockedAccountException e) {
             return ApiResult.Fail("账号已被锁定,请联系管理员");
         }catch (AuthenticationException e) {
-            return ApiResult.Fail("账户验证失败");
+                return ApiResult.Fail("账户验证失败");
+        }
+        catch (Exception ex)
+        {
+            return ApiResult.Fail(ex.getMessage());
         }
 
-        //return ApiResult.Success("");
     }
 
     /**
@@ -90,7 +94,11 @@ public class SysLoginController {
      */
     @RequestMapping(value = "logout", method = RequestMethod.GET)
     public ApiResult logout() {
-        ShiroUtils.logout();
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
+        /*
+        * 从redis里面移除
+        * */
         return ApiResult.Success();
     }
 }

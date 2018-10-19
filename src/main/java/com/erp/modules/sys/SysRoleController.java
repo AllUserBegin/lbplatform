@@ -1,8 +1,7 @@
 package com.erp.modules.sys;
 
 import com.erp.common.utils.ApiResult;
-import com.erp.common.utils.DateUtils;
-import com.erp.common.xss.SQLFilter;
+
 import com.erp.dto.reponse.sys.SysRoleRep;
 import com.erp.dto.request.sys.SysRoleCreateReq;
 import com.erp.dto.request.sys.SysRoleModifyReq;
@@ -14,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ import java.util.List;
  * 
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-12 14:52:58
+ * @date 2018-10-18 16:01:31
  */
 @RestController
 @RequestMapping(value = "/sys/sysrole", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
@@ -39,6 +39,7 @@ public class SysRoleController {
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysrole:create")
     public ApiResult create(SysRoleCreateReq data)
     {
 			SysRoleBean entity=new SysRoleBean();
@@ -49,6 +50,7 @@ public class SysRoleController {
 
     @ApiOperation(value = "修改")
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysrole:modify")
     public  ApiResult modify(SysRoleModifyReq data)
     {
         Example example = new Example(SysRoleBean.class);
@@ -65,6 +67,7 @@ public class SysRoleController {
 
     @ApiOperation(value = "删除")
     @RequestMapping(value = "/del", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysrole:del")
     public ApiResult del(Long roleId)
     {
 			sysRoleService.deleteByPrimaryKey(roleId);
@@ -73,6 +76,7 @@ public class SysRoleController {
 
     @ApiOperation(value = "获取单条")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysrole:info")
     public  ApiResult info(Long roleId)
     {
         Example example = new Example(SysRoleBean.class);
@@ -89,6 +93,7 @@ public class SysRoleController {
                     @ApiImplicitParam(paramType ="query", name = "size", value = "每页显示条数", dataType = "String")
             })
     @ResponseBody()
+    @RequiresPermissions("sys:sysrole:list")
     public ApiResult<List<SysRoleRep>> GetSysRoleList(
             @RequestParam(required = false,defaultValue = "1") Integer page,
             @RequestParam(required = false,defaultValue = "15") Integer size) {

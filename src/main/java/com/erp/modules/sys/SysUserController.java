@@ -1,8 +1,6 @@
 package com.erp.modules.sys;
 
 import com.erp.common.utils.ApiResult;
-import com.erp.common.utils.DateUtils;
-import com.erp.common.xss.SQLFilter;
 import com.erp.dto.reponse.sys.SysUserRep;
 import com.erp.dto.request.sys.SysUserCreateReq;
 import com.erp.dto.request.sys.SysUserModifyReq;
@@ -14,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ import java.util.List;
  * 
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-12 14:52:58
+ * @date 2018-10-18 16:01:30
  */
 @RestController
 @RequestMapping(value = "/sys/sysuser", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
@@ -39,6 +38,7 @@ public class SysUserController {
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysuser:create")
     public ApiResult create(SysUserCreateReq data)
     {
 			SysUserBean entity=new SysUserBean();
@@ -49,6 +49,7 @@ public class SysUserController {
 
     @ApiOperation(value = "修改")
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysuser:modify")
     public  ApiResult modify(SysUserModifyReq data)
     {
         Example example = new Example(SysUserBean.class);
@@ -65,6 +66,7 @@ public class SysUserController {
 
     @ApiOperation(value = "删除")
     @RequestMapping(value = "/del", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysuser:del")
     public ApiResult del(Long userId)
     {
 			sysUserService.deleteByPrimaryKey(userId);
@@ -73,6 +75,7 @@ public class SysUserController {
 
     @ApiOperation(value = "获取单条")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysuser:info")
     public  ApiResult info(Long userId)
     {
         Example example = new Example(SysUserBean.class);
@@ -89,6 +92,7 @@ public class SysUserController {
                     @ApiImplicitParam(paramType ="query", name = "size", value = "每页显示条数", dataType = "String")
             })
     @ResponseBody()
+    @RequiresPermissions("sys:sysuser:list")
     public ApiResult<List<SysUserRep>> GetSysUserList(
             @RequestParam(required = false,defaultValue = "1") Integer page,
             @RequestParam(required = false,defaultValue = "15") Integer size) {

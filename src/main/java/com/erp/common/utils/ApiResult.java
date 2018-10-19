@@ -47,6 +47,7 @@ public class ApiResult <T>{
     }
     public static ApiResult Fail()
     {
+
         return Fail("");
     }
     public static ApiResult Fail(String msg)

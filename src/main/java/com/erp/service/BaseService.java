@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
 import java.io.Serializable;
+import java.util.Dictionary;
 import java.util.List;
+import java.util.Set;
 
 public abstract class BaseService<T,ID extends Serializable> {
     @Autowired
@@ -61,6 +63,22 @@ public abstract class BaseService<T,ID extends Serializable> {
 
     public List<T> queryByExample(Example example) {
         return baseMapper.selectByExample(example);
+    }
+
+
+    /*
+      根据主键ID 获取数据
+     */
+   public T findById(ID id)
+   {
+      return  baseMapper.selectByPrimaryKey(id);
+   }
+    /*
+       获取所有数据
+    */
+    public List<T> findAll()
+    {
+        return  baseMapper.selectAll();
     }
 
 

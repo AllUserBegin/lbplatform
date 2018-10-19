@@ -14,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,7 +28,7 @@ import java.util.List;
  * 
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-12 14:52:58
+ * @date 2018-10-18 16:01:31
  */
 @RestController
 @RequestMapping(value = "/sys/sysmenu", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
@@ -39,6 +40,7 @@ public class SysMenuController {
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysmenu:create")
     public ApiResult create(SysMenuCreateReq data)
     {
 			SysMenuBean entity=new SysMenuBean();
@@ -49,6 +51,7 @@ public class SysMenuController {
 
     @ApiOperation(value = "修改")
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysmenu:modify")
     public  ApiResult modify(SysMenuModifyReq data)
     {
         Example example = new Example(SysMenuBean.class);
@@ -65,6 +68,7 @@ public class SysMenuController {
 
     @ApiOperation(value = "删除")
     @RequestMapping(value = "/del", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysmenu:del")
     public ApiResult del(Long menuId)
     {
 			sysMenuService.deleteByPrimaryKey(menuId);
@@ -73,6 +77,7 @@ public class SysMenuController {
 
     @ApiOperation(value = "获取单条")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysmenu:info")
     public  ApiResult info(Long menuId)
     {
         Example example = new Example(SysMenuBean.class);
@@ -89,6 +94,7 @@ public class SysMenuController {
                     @ApiImplicitParam(paramType ="query", name = "size", value = "每页显示条数", dataType = "String")
             })
     @ResponseBody()
+    @RequiresPermissions("sys:sysmenu:list")
     public ApiResult<List<SysMenuRep>> GetSysMenuList(
             @RequestParam(required = false,defaultValue = "1") Integer page,
             @RequestParam(required = false,defaultValue = "15") Integer size) {

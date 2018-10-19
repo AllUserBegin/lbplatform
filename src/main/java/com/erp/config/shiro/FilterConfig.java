@@ -1,4 +1,4 @@
-package com.erp.config;
+package com.erp.config.shiro;
 
 import com.erp.common.xss.XssFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

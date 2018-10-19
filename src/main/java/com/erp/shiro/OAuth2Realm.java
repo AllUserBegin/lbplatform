@@ -1,22 +1,22 @@
 package com.erp.shiro;
 
-import com.erp.common.utils.Constant;
-import com.erp.config.OAuth2Token;
-import com.erp.entity.sys.SysMenuBean;
+
 import com.erp.entity.sys.SysUserBean;
-import com.erp.service.sys.SysMenuService;
+
 import com.erp.service.sys.SysUserService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+
+
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+
 
 /**
  * 认证
@@ -27,104 +27,74 @@ public class OAuth2Realm extends AuthorizingRealm {
     @Autowired
     private SysUserService sysUserService;
 
-    @Autowired
-    private SysMenuService sysMenuService;
-
-    @Override
+/*    @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof OAuth2Token;
-    }
-
+    }*/
     /**
      * 授权(验证权限时调用)
      */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals)
-    {
-       /* SysUserEntity user = (SysUserEntity)principals.getPrimaryPrincipal();
-        Long userId = user.getUserId();
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
-        //用户权限列表
-        Set<String> permsSet = shiroService.getUserPermissions(userId);
+        String username = (String) principals.getPrimaryPrincipal();
 
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setStringPermissions(permsSet);
-        return info;*/
+        SysUserBean entity = sysUserService.findByName(username);
+        //把principals放session中 key=userId value=principals
+        SecurityUtils.getSubject().getSession().setAttribute(String.valueOf(entity.getUserId()),SecurityUtils.getSubject().getPrincipals());
 
-        SysUserBean user = (SysUserBean) principals.getPrimaryPrincipal();
-        Long userId = user.getUserId();
 
-        List<String> permsList;
 
-        //系统管理员，拥有最高权限
-        if (userId == Constant.SUPER_ADMIN) {
-            List<SysMenuBean> menuList = sysMenuService.GetAll();
-            permsList = new ArrayList<>(menuList.size());
-            for (SysMenuBean menu : menuList) {
-                permsList.add(menu.getPerms());
-            }
-        } else {
-            permsList = sysMenuService.GetByUserId(userId);
+        Session  session=  SecurityUtils.getSubject().getSession();
+        if(null==session)
+        {
+            throw new IncorrectCredentialsException("token失效，请重新登录");
         }
 
-        //用户权限列表
-        Set<String> permsSet = new HashSet<>();
-        for (String perms : permsList) {
-            if (StringUtils.isBlank(perms)) {
-                continue;
-            }
-            permsSet.addAll(Arrays.asList(perms.trim().split(",")));
-        }
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setStringPermissions(permsSet);
-        return info;
+        //authorizationInfo.setRoles(sysUserService.findRoles(username));
+        authorizationInfo.setStringPermissions(sysUserService.findPermissions(username));
+
+        return authorizationInfo;
     }
-
     /**
      * 认证(登录时调用)
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken accessToken) throws AuthenticationException {
-       /* String accessToken = (String) token.getPrincipal();
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        UsernamePasswordToken token = (UsernamePasswordToken)authenticationToken;
 
-        //根据accessToken，查询用户信息
-        SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+      /*  String strToken =  (String) authenticationToken.getPrincipal();
+        if (strToken == null) {
+            throw new AccountException("Token不能为空");
+        }*/
+
+        //strToken，去redis查询用户信息
+     /*   SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
         //token失效
         if(tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()){
             throw new IncorrectCredentialsException("token失效，请重新登录");
+        }*/
+
+        String username=token.getUsername();
+
+        SysUserBean entity = sysUserService.findByName(username);
+
+        if (entity == null) {
+            throw new UnknownAccountException();//没找到帐号
         }
-
-        //查询用户信息
-        SysUserEntity user = shiroService.queryUser(tokenEntity.getUserId());
-        //账号锁定
-        if(user.getStatus() == 0){
-            throw new LockedAccountException("账号已被锁定,请联系管理员");
+        if (entity.getStatus() == 0) {
+            throw new LockedAccountException(); //帐号锁定
         }
+        Session session = SecurityUtils.getSubject().getSession();
+        session.setAttribute("user", entity);
 
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, accessToken, getName());
-        return info;*/
-
-
-
-        //UsernamePasswordToken token = (UsernamePasswordToken) accessToken;
-
-        //查询用户信息
-        SysUserBean user = new SysUserBean();
-       // user.setUsername(token.getUsername());
-        user = sysUserService.GetInfo(user);
-
-        //账号不存在
-        if (user == null) {
-            throw new UnknownAccountException("账号或密码不正确");
-        }
-
-        //账号锁定
-        if (user.getStatus() == 0) {
-            throw new LockedAccountException("账号已被锁定,请联系管理员");
-        }
-
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
-        return info;
+        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以在此判断或自定义实现
+        return new SimpleAuthenticationInfo(username, entity.getPassword(), getName());
     }
+
+
 }
+
+

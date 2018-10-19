@@ -1,8 +1,7 @@
 package com.erp.modules.sys;
 
 import com.erp.common.utils.ApiResult;
-import com.erp.common.utils.DateUtils;
-import com.erp.common.xss.SQLFilter;
+
 import com.erp.dto.reponse.sys.SysDeptRep;
 import com.erp.dto.request.sys.SysDeptCreateReq;
 import com.erp.dto.request.sys.SysDeptModifyReq;
@@ -14,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ import java.util.List;
  * 
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-12 14:52:58
+ * @date 2018-10-18 16:01:31
  */
 @RestController
 @RequestMapping(value = "/sys/sysdept", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
@@ -39,6 +39,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysdept:create")
     public ApiResult create(SysDeptCreateReq data)
     {
 			SysDeptBean entity=new SysDeptBean();
@@ -49,6 +50,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "修改")
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    @RequiresPermissions("sys:sysdept:modify")
     public  ApiResult modify(SysDeptModifyReq data)
     {
         Example example = new Example(SysDeptBean.class);
@@ -65,6 +67,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "删除")
     @RequestMapping(value = "/del", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysdept:del")
     public ApiResult del(Long deptId)
     {
 			sysDeptService.deleteByPrimaryKey(deptId);
@@ -73,6 +76,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "获取单条")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequiresPermissions("sys:sysdept:info")
     public  ApiResult info(Long deptId)
     {
         Example example = new Example(SysDeptBean.class);
@@ -89,6 +93,7 @@ public class SysDeptController {
                     @ApiImplicitParam(paramType ="query", name = "size", value = "每页显示条数", dataType = "String")
             })
     @ResponseBody()
+    @RequiresPermissions("sys:sysdept:list")
     public ApiResult<List<SysDeptRep>> GetSysDeptList(
             @RequestParam(required = false,defaultValue = "1") Integer page,
             @RequestParam(required = false,defaultValue = "15") Integer size) {

@@ -1,8 +1,8 @@
-package com.erp.config;
+package com.erp.config.shiro;
 
 import org.apache.shiro.authc.AuthenticationToken;
 
-public class OAuth2Token implements AuthenticationToken {
+/*public class OAuth2Token implements AuthenticationToken {
     private String token;
 
     public OAuth2Token(String token){
@@ -18,4 +18,4 @@ public class OAuth2Token implements AuthenticationToken {
     public Object getCredentials() {
         return token;
     }
-}
+}*/

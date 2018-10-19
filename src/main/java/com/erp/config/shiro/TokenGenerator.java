@@ -1,4 +1,4 @@
-package com.erp.config;
+package com.erp.config.shiro;
 
 import com.erp.common.exception.RRException;
 
