@@ -5,12 +5,16 @@ import lombok.Data;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import javax.persistence.Column;
+
+    
+
 /**
  * 角色
  *
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-15 09:41:58
+ * @date 2018-10-19 14:48:57
  */
 @Data
 @Table(name = "sys_role")
@@ -18,14 +22,19 @@ public class SysRoleBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	        //
+        @Column(name = "role_id")
         private Long roleId;
 	        //角色名称
+        @Column(name = "role_name")
         private String roleName;
 	        //备注
+        @Column(name = "remark")
         private String remark;
 	        //部门ID
+        @Column(name = "dept_id")
         private Long deptId;
 	        //创建时间
+        @Column(name = "create_time")
         private Date createTime;
 	
 	        /**
@@ -88,4 +97,13 @@ public class SysRoleBean implements Serializable {
         public Date getCreateTime() {
             return createTime;
         }
-	}
+	
+    public static class ${
+                    public static String roleId="roleId";
+                    public static String roleName="roleName";
+                    public static String remark="remark";
+                    public static String deptId="deptId";
+                    public static String createTime="createTime";
+        
+    }
+}

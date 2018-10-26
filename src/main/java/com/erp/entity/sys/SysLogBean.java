@@ -5,12 +5,16 @@ import lombok.Data;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import javax.persistence.Column;
+
+    
+
 /**
  * 系统日志
  *
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-15 09:41:58
+ * @date 2018-10-19 14:48:57
  */
 @Data
 @Table(name = "sys_log")
@@ -18,20 +22,28 @@ public class SysLogBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	        //
+        @Column(name = "id")
         private Long id;
 	        //用户名
+        @Column(name = "username")
         private String username;
 	        //用户操作
+        @Column(name = "operation")
         private String operation;
 	        //请求方法
+        @Column(name = "method")
         private String method;
 	        //请求参数
+        @Column(name = "params")
         private String params;
 	        //执行时长(毫秒)
+        @Column(name = "time")
         private Long time;
 	        //IP地址
+        @Column(name = "ip")
         private String ip;
 	        //创建时间
+        @Column(name = "create_date")
         private Date createDate;
 	
 	        /**
@@ -130,4 +142,16 @@ public class SysLogBean implements Serializable {
         public Date getCreateDate() {
             return createDate;
         }
-	}
+	
+    public static class ${
+                    public static String id="id";
+                    public static String username="username";
+                    public static String operation="operation";
+                    public static String method="method";
+                    public static String params="params";
+                    public static String time="time";
+                    public static String ip="ip";
+                    public static String createDate="createDate";
+        
+    }
+}

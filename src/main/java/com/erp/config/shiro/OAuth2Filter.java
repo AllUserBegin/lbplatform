@@ -1,3 +1,4 @@
+/*
 package com.erp.config.shiro;
 
 import com.alibaba.fastjson.JSON;
@@ -15,11 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+*/
 /**
  * oauth2过滤器
  *
- */
-/*
+ *//*
+
+
 public class OAuth2Filter extends AuthenticatingFilter {
 
     @Override
@@ -82,10 +85,12 @@ public class OAuth2Filter extends AuthenticatingFilter {
         return false;
     }
 
-    */
+
+*/
 /**
      * 获取请求的token
      *//*
+
 
     private String getRequestToken(HttpServletRequest httpRequest){
         //从header中获取token
@@ -98,7 +103,6 @@ public class OAuth2Filter extends AuthenticatingFilter {
 
         return token;
     }
-
-
 }
+
 */

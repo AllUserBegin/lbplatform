@@ -5,12 +5,16 @@ import lombok.Data;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import javax.persistence.Column;
+
+    
+
 /**
  * 用户与角色对应关系
  *
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-15 09:41:58
+ * @date 2018-10-19 14:48:57
  */
 @Data
 @Table(name = "sys_user_role")
@@ -18,10 +22,13 @@ public class SysUserRoleBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	        //
+        @Column(name = "id")
         private Long id;
 	        //用户ID
+        @Column(name = "user_id")
         private Long userId;
 	        //角色ID
+        @Column(name = "role_id")
         private Long roleId;
 	
 	        /**
@@ -60,4 +67,11 @@ public class SysUserRoleBean implements Serializable {
         public Long getRoleId() {
             return roleId;
         }
-	}
+	
+    public static class ${
+                    public static String id="id";
+                    public static String userId="userId";
+                    public static String roleId="roleId";
+        
+    }
+}

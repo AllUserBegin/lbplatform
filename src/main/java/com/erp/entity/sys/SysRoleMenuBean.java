@@ -5,12 +5,16 @@ import lombok.Data;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import javax.persistence.Column;
+
+    
+
 /**
  * 角色与菜单对应关系
  *
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-15 09:41:58
+ * @date 2018-10-19 14:48:57
  */
 @Data
 @Table(name = "sys_role_menu")
@@ -18,10 +22,13 @@ public class SysRoleMenuBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	        //
+        @Column(name = "id")
         private Long id;
 	        //角色ID
+        @Column(name = "role_id")
         private Long roleId;
 	        //菜单ID
+        @Column(name = "menu_id")
         private Long menuId;
 	
 	        /**
@@ -60,4 +67,11 @@ public class SysRoleMenuBean implements Serializable {
         public Long getMenuId() {
             return menuId;
         }
-	}
+	
+    public static class ${
+                    public static String id="id";
+                    public static String roleId="roleId";
+                    public static String menuId="menuId";
+        
+    }
+}

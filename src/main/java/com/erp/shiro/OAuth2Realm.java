@@ -1,6 +1,8 @@
 package com.erp.shiro;
 
 
+import com.erp.config.redis.RedisKeys;
+import com.erp.config.redis.RedisUtil;
 import com.erp.entity.sys.SysUserBean;
 
 import com.erp.service.sys.SysUserService;
@@ -15,7 +17,9 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.rmi.runtime.Log;
 
+import java.util.Set;
 
 
 /**
@@ -37,11 +41,11 @@ public class OAuth2Realm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
-        String username = (String) principals.getPrimaryPrincipal();
+        Long userId = (Long) principals.getPrimaryPrincipal();
 
-        SysUserBean entity = sysUserService.findByName(username);
+        //SysUserBean entity = sysUserService.findById(userId);
         //把principals放session中 key=userId value=principals
-        SecurityUtils.getSubject().getSession().setAttribute(String.valueOf(entity.getUserId()),SecurityUtils.getSubject().getPrincipals());
+        //SecurityUtils.getSubject().getSession().setAttribute(String.valueOf(entity.getUserId()),SecurityUtils.getSubject().getPrincipals());
 
 
 
@@ -52,9 +56,10 @@ public class OAuth2Realm extends AuthorizingRealm {
         }
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        Set<String> list=sysUserService.findPermissions(userId,true);
 
         //authorizationInfo.setRoles(sysUserService.findRoles(username));
-        authorizationInfo.setStringPermissions(sysUserService.findPermissions(username));
+        authorizationInfo.setStringPermissions(list);
 
         return authorizationInfo;
     }
@@ -76,22 +81,26 @@ public class OAuth2Realm extends AuthorizingRealm {
         if(tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()){
             throw new IncorrectCredentialsException("token失效，请重新登录");
         }*/
-
-        String username=token.getUsername();
-
-        SysUserBean entity = sysUserService.findByName(username);
-
-        if (entity == null) {
-            throw new UnknownAccountException();//没找到帐号
+        String userId=token.getUsername();
+        SysUserBean entity = sysUserService.findById(Long.parseLong(userId));
+        //账号不存在
+        if(entity == null) {
+            throw new UnknownAccountException("账号或密码不正确");
         }
-        if (entity.getStatus() == 0) {
-            throw new LockedAccountException(); //帐号锁定
+
+        //账号锁定
+        if(entity.getStatus() == 0){
+            throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
         Session session = SecurityUtils.getSubject().getSession();
-        session.setAttribute("user", entity);
+
+       /* if(redisUtil.exists(RedisKeys.getUserLoginInfo(session.getId().toString()))==false)
+        {
+            throw new LockedAccountException("登录超时，请重新登录!");
+        }*/
 
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以在此判断或自定义实现
-        return new SimpleAuthenticationInfo(username, entity.getPassword(), getName());
+        return new SimpleAuthenticationInfo(entity.getUserId(), entity.getPassword(), getName());
     }
 
 

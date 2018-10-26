@@ -1,5 +1,6 @@
 package com.erp.config.shiro;
 
+import com.erp.config.redis.RedisKeys;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;

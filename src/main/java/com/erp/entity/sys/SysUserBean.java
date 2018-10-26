@@ -2,38 +2,52 @@ package com.erp.entity.sys;
 
 import java.util.Date;
 import lombok.Data;
-import javax.persistence.Table;
+import tk.mybatis.mapper.annotation.KeySql;
+
+import javax.persistence.*;
 import java.io.Serializable;
+
 
 /**
  * 系统用户
  *
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-15 09:41:58
+ * @date 2018-10-19 14:48:57
  */
 @Data
 @Table(name = "sys_user")
 public class SysUserBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
-	        //
+        @Id
+        @KeySql(useGeneratedKeys = true)
+        @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "JDBC")
+        @Column(name = "user_id")
         private Long userId;
 	        //用户名
+        @Column(name = "username")
         private String username;
 	        //密码
+        @Column(name = "password")
         private String password;
 	        //盐
+        @Column(name = "salt")
         private String salt;
 	        //邮箱
+        @Column(name = "email")
         private String email;
 	        //手机号
+        @Column(name = "mobile")
         private String mobile;
 	        //状态  0：禁用   1：正常
+        @Column(name = "status")
         private Integer status;
 	        //部门ID
+        @Column(name = "dept_id")
         private Long deptId;
 	        //创建时间
+        @Column(name = "create_time")
         private Date createTime;
 	
 	        /**
@@ -144,4 +158,17 @@ public class SysUserBean implements Serializable {
         public Date getCreateTime() {
             return createTime;
         }
-	}
+	
+    public static class ${
+                    public static String userId="userId";
+                    public static String username="username";
+                    public static String password="password";
+                    public static String salt="salt";
+                    public static String email="email";
+                    public static String mobile="mobile";
+                    public static String status="status";
+                    public static String deptId="deptId";
+                    public static String createTime="createTime";
+        
+    }
+}

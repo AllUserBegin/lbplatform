@@ -5,12 +5,16 @@ import lombok.Data;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import javax.persistence.Column;
+
+    
+
 /**
  * 部门管理
  *
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-15 09:41:58
+ * @date 2018-10-19 14:48:57
  */
 @Data
 @Table(name = "sys_dept")
@@ -18,14 +22,19 @@ public class SysDeptBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	        //
+        @Column(name = "dept_id")
         private Long deptId;
 	        //上级部门ID，一级部门为0
+        @Column(name = "parent_id")
         private Long parentId;
 	        //部门名称
+        @Column(name = "name")
         private String name;
 	        //排序
+        @Column(name = "order_num")
         private Integer orderNum;
 	        //是否删除  -1：已删除  0：正常
+        @Column(name = "del_flag")
         private Integer delFlag;
 	
 	        /**
@@ -88,4 +97,13 @@ public class SysDeptBean implements Serializable {
         public Integer getDelFlag() {
             return delFlag;
         }
-	}
+	
+    public static class ${
+                    public static String deptId="deptId";
+                    public static String parentId="parentId";
+                    public static String name="name";
+                    public static String orderNum="orderNum";
+                    public static String delFlag="delFlag";
+        
+    }
+}

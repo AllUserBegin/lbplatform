@@ -1,61 +1,61 @@
 package com.erp.config.redis;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.jedis.JedisConnection;
-import org.springframework.data.redis.core.*;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-import redis.clients.jedis.Jedis;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 
-/**
- * Redis配置
- *
-
- */
-
-@Configuration
-@ConditionalOnClass({JedisConnection.class, RedisOperations.class, Jedis.class})
+@Data
 public class RedisConfig {
-    @Autowired
-    private RedisConnectionFactory factory;
 
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
-        redisTemplate.setConnectionFactory(factory);
-        return redisTemplate;
+    @Value("${spring.redis.host}")
+    private static String host;
+
+    public static String  gethost()
+    {
+        return  host;
     }
 
-    @Bean
-    public HashOperations<String, String, Object> hashOperations(RedisTemplate<String, Object> redisTemplate) {
-        return redisTemplate.opsForHash();
+    @Value("${spring.redis.port}")
+    private static int port;
+
+    public static int  getport()
+    {
+        return  port;
     }
 
-    @Bean
-    public ValueOperations<String, String> valueOperations(RedisTemplate<String, String> redisTemplate) {
-        return redisTemplate.opsForValue();
+    @Value("${spring.redis.timeout}")
+    private static int timeout;
+
+    public static int  gettimeout()
+    {
+        return  timeout;
     }
 
-    @Bean
-    public ListOperations<String, Object> listOperations(RedisTemplate<String, Object> redisTemplate) {
-        return redisTemplate.opsForList();
+    //连接池中的最大空闲连接
+    @Value("${spring.redis.jedis.pool.max-idle}")
+    private  int maxIdle;
+
+    //连接池中的最小空闲连接
+    @Value("${spring.redis.jedis.pool.min-idle}")
+    private  int minIdle;
+
+    //连接池最大阻塞等待时间（使用负值表示没有限制）
+    @Value("${spring.redis.jedis.pool.max-wait}")
+    private  int maxWaitMillis;
+
+    //连接池最大连接数（使用负值表示没有限制）
+    @Value("${spring.redis.jedis.pool.max-active}")
+    private  int maxActive;
+
+    @Value("${spring.redis.password}")
+    private static String password;
+
+    public static String  getpassword()
+    {
+        return  password;
     }
 
-    @Bean
-    public SetOperations<String, Object> setOperations(RedisTemplate<String, Object> redisTemplate) {
-        return redisTemplate.opsForSet();
-    }
+    @Value("${spring.redis.block-when-exhausted}")
+    private  boolean  blockWhenExhausted;
 
-    @Bean
-    public ZSetOperations<String, Object> zSetOperations(RedisTemplate<String, Object> redisTemplate) {
-        return redisTemplate.opsForZSet();
-    }
+
 }

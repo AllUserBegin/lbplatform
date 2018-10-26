@@ -1,8 +1,10 @@
 package com.erp.config.shiro;
 
 
+import com.erp.config.redis.RedisConfig;
 import com.erp.shiro.OAuth2Realm;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -10,11 +12,13 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 
 
 import java.util.LinkedHashMap;
@@ -29,20 +33,38 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-    @Bean("sessionManager")
-    public SessionManager sessionManager(RedisShiroSessionDAO redisShiroSessionDAO,
-                                         @Value("${lbplatform.redis.open}") boolean redisOpen,
-                                         @Value("${lbplatform.shiro.redis}") boolean shiroRedis){
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        //设置session过期时间为1小时(单位：毫秒)，默认为30分钟
-        sessionManager.setGlobalSessionTimeout(60 * 60 * 1000);
-        sessionManager.setSessionValidationSchedulerEnabled(true);
-        sessionManager.setSessionIdUrlRewritingEnabled(false);
+    /**
+     * shiro 中配置 redis 缓存
+     *
+     * @return RedisManager
+     */
+  /*  private RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        // 缓存时间，单位为秒
+        //redisManager.setExpire(febsProperties.getShiro().getExpireIn()); // removed from shiro-redis v3.1.0 api
+        redisManager.setHost(RedisConfig.gethost());
+        redisManager.setPort(RedisConfig.getport());
+        redisManager.setPassword(RedisConfig.getpassword());
+        redisManager.setTimeout(RedisConfig.gettimeout());
+        return redisManager;
+    }
+    @Bean
+    public RedisSessionDAO redisSessionDAO() {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager());
+        return redisSessionDAO;
+    }*/
 
-        //lbplatform.shiro.redis=true，则shiro session存到redis里
-        if(redisOpen && shiroRedis){
-            sessionManager.setSessionDAO(redisShiroSessionDAO);
-        }
+    @Bean("sessionManager")
+    public SessionManager sessionManager(){
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        sessionManager.setSessionIdCookieEnabled(true);
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
+        //sessionManager.setSessionDAO(redisSessionDAO());
+        // 设置session超时时间，单位为毫秒
+        //sessionManager.setGlobalSessionTimeout(febsProperties.getShiro().getSessionTimeout());
+
         return sessionManager;
     }
 
@@ -64,6 +86,7 @@ public class ShiroConfig {
 /*            Map<String, Filter> filters = new HashMap<>();
             filters.put("oauth2", new OAuth2Filter());
             shiroFilter.setFilters(filters);*/
+
 
             Map<String, String> filterMap = new LinkedHashMap<>();
             filterMap.put("/webjars/**", "anon");

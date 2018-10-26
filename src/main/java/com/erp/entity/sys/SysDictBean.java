@@ -5,12 +5,16 @@ import lombok.Data;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import javax.persistence.Column;
+
+    
+
 /**
  * 数据字典表
  *
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-15 09:41:58
+ * @date 2018-10-19 14:48:57
  */
 @Data
 @Table(name = "sys_dict")
@@ -18,20 +22,28 @@ public class SysDictBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	        //
+        @Column(name = "id")
         private Long id;
 	        //字典名称
+        @Column(name = "name")
         private String name;
 	        //字典类型
+        @Column(name = "type")
         private String type;
 	        //字典码
+        @Column(name = "code")
         private String code;
 	        //字典值
+        @Column(name = "value")
         private String value;
 	        //排序
+        @Column(name = "order_num")
         private Integer orderNum;
 	        //备注
+        @Column(name = "remark")
         private String remark;
 	        //删除标记  -1：已删除  0：正常
+        @Column(name = "del_flag")
         private Integer delFlag;
 	
 	        /**
@@ -130,4 +142,16 @@ public class SysDictBean implements Serializable {
         public Integer getDelFlag() {
             return delFlag;
         }
-	}
+	
+    public static class ${
+                    public static String id="id";
+                    public static String name="name";
+                    public static String type="type";
+                    public static String code="code";
+                    public static String value="value";
+                    public static String orderNum="orderNum";
+                    public static String remark="remark";
+                    public static String delFlag="delFlag";
+        
+    }
+}

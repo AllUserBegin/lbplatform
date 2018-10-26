@@ -2,8 +2,8 @@ package com.erp.modules;
 
 import com.erp.common.utils.ApiResult;
 
-
-import com.erp.config.shiro.TokenGenerator;
+import com.erp.config.redis.RedisKeys;
+import com.erp.config.redis.RedisUtil;
 import com.erp.entity.sys.SysUserBean;
 import com.erp.service.sys.SysUserService;
 import com.google.code.kaptcha.Producer;
@@ -12,18 +12,25 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import java.util.HashMap;
+import java.util.Map;
+
+
 @RestController
 @RequestMapping(value = "/SysLogin", produces = MediaType.APPLICATION_JSON_VALUE) //配置返回值 application/json
 public class SysLoginController {
     @Autowired
     private Producer producer;
+    @Autowired
+    RedisUtil redisUtil;
+
 
     @Autowired
     private SysUserService sysUserService;
@@ -44,6 +51,7 @@ public class SysLoginController {
         ImageIO.write(image, "jpg", out);
     }*/
 
+
     /**
      * 登录
      */
@@ -54,7 +62,7 @@ public class SysLoginController {
         if(!captcha.equalsIgnoreCase(kaptcha)){
             return ApiResult.Fail("验证码不正确");
         }*/
-        String passwordmd5 = new Md5Hash(password, "2").toString();
+
 
         SysUserBean user = sysUserService.findByName(username);
         if(null==user)
@@ -62,16 +70,31 @@ public class SysLoginController {
             return ApiResult.Fail("用户不存在");
         }
 
+        String passwordmd5 = new Md5Hash(password, user.getSalt()).toString();
+
+
+
         if(user.getPassword().equalsIgnoreCase(passwordmd5)==false)
         {
             return ApiResult.Fail("密码不正确");
         }
-       /* String strToken=  TokenGenerator.generateValue(username+passwordmd5);*/
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), passwordmd5);
+        /*String strToken=  TokenGenerator.generateValue(username+passwordmd5);*/
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserId().toString(), passwordmd5);
+        token.setRememberMe(true);//rememberMe cookie 效果是重开浏览器后无需重新登录
         Subject currentUser = SecurityUtils.getSubject();
         try{
+            if (currentUser != null) {
+                currentUser.logout();
+            }
             currentUser.login(token);
-            //String sid= currentUser.getSession().getId().toString();
+            Map<String, String> map= new HashMap<>();
+            map.put(SysUserBean.$.userId,user.getUserId().toString());
+            map.put(SysUserBean.$.username,user.getUsername());
+
+
+            redisUtil.hmset(RedisKeys.getUserLoginInfo(currentUser.getSession().getId().toString()), map,60*60*12,0);
+
+
              return  ApiResult.Success("登录成功",passwordmd5);
         }catch (UnknownAccountException e) {
             return ApiResult.Fail(e.getMessage());
@@ -86,7 +109,6 @@ public class SysLoginController {
         {
             return ApiResult.Fail(ex.getMessage());
         }
-
     }
 
     /**
@@ -95,6 +117,8 @@ public class SysLoginController {
     @RequestMapping(value = "logout", method = RequestMethod.GET)
     public ApiResult logout() {
         Subject currentUser = SecurityUtils.getSubject();
+
+        redisUtil.del(0,RedisKeys.getUserLoginInfo(currentUser.getSession().getId().toString()));
         currentUser.logout();
         /*
         * 从redis里面移除

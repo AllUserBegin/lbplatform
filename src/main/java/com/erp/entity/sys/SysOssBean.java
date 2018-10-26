@@ -5,12 +5,16 @@ import lombok.Data;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import javax.persistence.Column;
+
+    
+
 /**
  * 文件上传
  *
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-15 09:41:58
+ * @date 2018-10-19 14:48:57
  */
 @Data
 @Table(name = "sys_oss")
@@ -18,10 +22,13 @@ public class SysOssBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	        //
+        @Column(name = "id")
         private Long id;
 	        //URL地址
+        @Column(name = "url")
         private String url;
 	        //创建时间
+        @Column(name = "create_date")
         private Date createDate;
 	
 	        /**
@@ -60,4 +67,11 @@ public class SysOssBean implements Serializable {
         public Date getCreateDate() {
             return createDate;
         }
-	}
+	
+    public static class ${
+                    public static String id="id";
+                    public static String url="url";
+                    public static String createDate="createDate";
+        
+    }
+}

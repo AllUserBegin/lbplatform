@@ -5,12 +5,16 @@ import lombok.Data;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import javax.persistence.Column;
+
+    
+
 /**
  * 系统配置信息表
  *
  * @author Lic
  * @email iqeq@iqeq.com
- * @date 2018-10-15 09:41:58
+ * @date 2018-10-19 14:48:57
  */
 @Data
 @Table(name = "sys_config")
@@ -18,14 +22,19 @@ public class SysConfigBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	        //
+        @Column(name = "id")
         private Long id;
 	        //key
+        @Column(name = "param_key")
         private String paramKey;
 	        //value
+        @Column(name = "param_value")
         private String paramValue;
 	        //状态   0：隐藏   1：显示
+        @Column(name = "status")
         private Integer status;
 	        //备注
+        @Column(name = "remark")
         private String remark;
 	
 	        /**
@@ -88,4 +97,13 @@ public class SysConfigBean implements Serializable {
         public String getRemark() {
             return remark;
         }
-	}
+	
+    public static class ${
+                    public static String id="id";
+                    public static String paramKey="paramKey";
+                    public static String paramValue="paramValue";
+                    public static String status="status";
+                    public static String remark="remark";
+        
+    }
+}
