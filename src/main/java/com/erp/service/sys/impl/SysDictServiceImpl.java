@@ -4,6 +4,6 @@ import com.erp.service.BaseService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysDictService extends BaseService<SysDictBean,Long> {
+public class SysDictServiceImpl extends BaseService<SysDictBean,Long> implements SysDictService {
 
 }

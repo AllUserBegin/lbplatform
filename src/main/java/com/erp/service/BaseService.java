@@ -18,7 +18,7 @@ public abstract class BaseService<T,ID extends Serializable> {
 
     public T insert(T entity) {
 
-        baseMapper.insert(entity);
+        baseMapper.insertSelective(entity);
         return entity;
     }
 

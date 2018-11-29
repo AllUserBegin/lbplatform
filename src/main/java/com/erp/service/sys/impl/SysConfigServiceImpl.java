@@ -4,6 +4,6 @@ import com.erp.service.BaseService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysConfigService extends BaseService<SysConfigBean,Long> {
+public class SysConfigServiceImpl extends BaseService<SysConfigBean,Long> implements SysConfigService {
 
 }

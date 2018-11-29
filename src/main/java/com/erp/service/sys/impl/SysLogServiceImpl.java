@@ -4,6 +4,6 @@ import com.erp.service.BaseService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysLogService extends BaseService<SysLogBean,Long> {
+public class SysLogServiceImpl extends BaseService<SysLogBean,Long> implements SysLogService {
 
 }

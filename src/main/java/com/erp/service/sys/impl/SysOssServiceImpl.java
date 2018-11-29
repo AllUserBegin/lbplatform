@@ -4,6 +4,6 @@ import com.erp.service.BaseService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysOssService extends BaseService<SysOssBean,Long> {
+public class SysOssServiceImpl extends BaseService<SysOssBean,Long> implements SysOssService {
 
 }

@@ -6,7 +6,10 @@ import com.erp.dto.reponse.sys.SysRoleRep;
 import com.erp.dto.request.sys.SysRoleCreateReq;
 import com.erp.dto.request.sys.SysRoleModifyReq;
 import com.erp.entity.sys.SysRoleBean;
+import com.erp.entity.sys.SysRoleDeptBean;
+import com.erp.entity.sys.SysRoleMenuBean;
 import com.erp.service.sys.SysRoleService;
+
 
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -20,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Example;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,13 +43,43 @@ public class SysRoleController {
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @RequiresPermissions("sys:sysrole:create")
-    public ApiResult create(SysRoleCreateReq data)
-    {
-			SysRoleBean entity=new SysRoleBean();
+   /* @RequiresPermissions("sys:sysrole:create")*/
+    public ApiResult create(SysRoleCreateReq data) {
+        SysRoleBean entity = new SysRoleBean();
+        entity.setRemark(data.getRemark());
+        entity.setRoleName(data.getRoleName());
+        entity.setCreateTime(new Date());
 
-			sysRoleService.insert(entity);
-			return ApiResult.Success("操作成功!");
+        List<SysRoleDeptBean> deptList = new ArrayList<>();
+        if(data.getDeptIdList().size()>0) {
+            for (Long s : data.getDeptIdList()) {
+                if(s<=0)
+                    continue;;
+                SysRoleDeptBean m = new SysRoleDeptBean();
+                m.setDeptId(s);
+                deptList.add(m);
+            }
+        }
+        if(deptList.size()<=0) {
+            return  ApiResult.Fail("部门不能为空!");
+        }
+
+        List<SysRoleMenuBean> menuList = new ArrayList<>();
+        if(data.getMenuIdList().size()>0) {
+            for (Long s : data.getMenuIdList()) {
+                if(s<=0)
+                    continue;;
+                SysRoleMenuBean m = new SysRoleMenuBean();
+                m.setMenuId(s);
+                menuList.add(m);
+            }
+        }
+        if(menuList.size()<=0) {
+            return  ApiResult.Fail("菜单不能为空!");
+        }
+
+        sysRoleService.insert(entity,deptList,menuList);
+        return ApiResult.Success("操作成功!");
     }
 
     @ApiOperation(value = "修改")

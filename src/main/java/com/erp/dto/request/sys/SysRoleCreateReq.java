@@ -1,6 +1,8 @@
 package com.erp.dto.request.sys;
 
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -17,7 +19,7 @@ public class SysRoleCreateReq {
 
     
         //@NotBlank(message = "不能为空")
-        @ApiModelProperty(value = "")//, required = true
+        @ApiModelProperty(value = "",hidden = true)//, required = true
         public Long roleId;
 
 
@@ -41,8 +43,14 @@ public class SysRoleCreateReq {
 
     
         //@NotBlank(message = "创建时间不能为空")
-        @ApiModelProperty(value = "创建时间")//, required = true
+        @ApiModelProperty(value = "创建时间",hidden = true)//, required = true
         public Date createTime;
+
+
+        @ApiModelProperty(value = "菜单列表")
+        private List<Long> menuIdList;
+        @ApiModelProperty(value = "部门列表")
+        private List<Long> deptIdList;
 
 
     }

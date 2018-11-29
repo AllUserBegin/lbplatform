@@ -1,8 +1,6 @@
 package com.erp.shiro;
 
 
-import com.erp.config.redis.RedisKeys;
-import com.erp.config.redis.RedisUtil;
 import com.erp.entity.sys.SysUserBean;
 
 import com.erp.service.sys.SysUserService;
@@ -17,7 +15,6 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.rmi.runtime.Log;
 
 import java.util.Set;
 

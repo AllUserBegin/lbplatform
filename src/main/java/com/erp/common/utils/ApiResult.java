@@ -2,11 +2,9 @@ package com.erp.common.utils;
 
 
 import com.alibaba.fastjson.JSON;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ApiResult <T>{
     public ApiResult(){
 

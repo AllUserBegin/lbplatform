@@ -1,8 +1,6 @@
 package com.erp.modules.sys;
 
 import com.erp.common.utils.ApiResult;
-import com.erp.common.utils.DateUtils;
-import com.erp.common.xss.SQLFilter;
 import com.erp.dto.reponse.sys.SysMenuRep;
 import com.erp.dto.request.sys.SysMenuCreateReq;
 import com.erp.dto.request.sys.SysMenuModifyReq;
@@ -47,6 +45,20 @@ public class SysMenuController {
 
 			sysMenuService.insert(entity);
 			return ApiResult.Success("操作成功!");
+    }
+
+    /**
+     * create by: lic
+     * description:
+     * create time: 下午 2:30 2018/11/29 0029
+     * @return
+     */
+    @ApiOperation(value = "根据用户ID 获取菜单")
+    @GetMapping(value ="getMyMenu")
+    public  ApiResult getMyMenu(long userid)
+    {
+        List<SysMenuBean> list= sysMenuService.listAllByUserId(userid);
+        return ApiResult.Success("操作成功!",list );
     }
 
     @ApiOperation(value = "修改")

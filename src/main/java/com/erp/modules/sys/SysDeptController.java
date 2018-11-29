@@ -1,12 +1,12 @@
 package com.erp.modules.sys;
-
+import com.erp.service.sys.*;
 import com.erp.common.utils.ApiResult;
 
 import com.erp.dto.reponse.sys.SysDeptRep;
 import com.erp.dto.request.sys.SysDeptCreateReq;
 import com.erp.dto.request.sys.SysDeptModifyReq;
 import com.erp.entity.sys.SysDeptBean;
-import com.erp.service.sys.SysDeptService;
+
 
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
