@@ -6,6 +6,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public class DateUtils {
 	public final static String DATE_PATTERN = "yyyy-MM-dd";
 	/** 时间格式(yyyy-MM-dd HH:mm:ss) */
 	public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
 
     /**
      * 日期格式化 日期格式为：yyyy-MM-dd
@@ -142,6 +144,7 @@ public class DateUtils {
      * @return 加/减几月后的日期
      */
     public static Date addDateMonths(Date date, int months) {
+        Date date
         DateTime dateTime = new DateTime(date);
         return dateTime.plusMonths(months).toDate();
     }

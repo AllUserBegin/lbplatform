@@ -1,3 +1,4 @@
+
 package com.erp.config;
 
 
@@ -7,7 +8,6 @@ import com.alibaba.druid.support.http.WebStatFilter;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import tk.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -16,13 +16,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import tk.mybatis.spring.annotation.MapperScan;
 
 import javax.sql.DataSource;
 
 
 @Configuration
 //扫描Mapper  basePackages要精确到source1目录便于进行不同数据源的区分
-@MapperScan(basePackages = "com.erp.UserMapperSource", sqlSessionTemplateRef = "sqlSessionTemplateOne")
+@MapperScan(basePackages = "com.erp.dao", sqlSessionTemplateRef = "sqlSessionTemplateOne")
 public class UserDataSourceConfig {
     @Bean(name = "userdatasource")
     @ConfigurationProperties(prefix = "spring.datasource.userdatasource")
@@ -73,3 +74,4 @@ public class UserDataSourceConfig {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 }
+

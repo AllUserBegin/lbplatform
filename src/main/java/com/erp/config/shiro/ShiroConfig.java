@@ -89,7 +89,7 @@ public class ShiroConfig {
 
 
             Map<String, String> filterMap = new LinkedHashMap<>();
-            filterMap.put("/webjars/**", "anon");
+         /*   filterMap.put("/webjars/**", "anon");
             filterMap.put("/druid/**", "anon");
             filterMap.put("/app/**", "anon");
             filterMap.put("/SysLogin/login", "anon");
@@ -97,7 +97,7 @@ public class ShiroConfig {
             filterMap.put("/v2/api-docs", "anon");
             filterMap.put("/swagger-ui.html", "anon");
             filterMap.put("/swagger-resources/**", "anon");
-            filterMap.put("/captcha.jpg", "anon");
+            filterMap.put("/captcha.jpg", "anon");*/
             /*filterMap.put("/**", "oauth2");*/
             shiroFilter.setFilterChainDefinitionMap(filterMap);
 

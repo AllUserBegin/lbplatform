@@ -66,5 +66,5 @@ public interface IService<T,ID extends Serializable> {
      * @return
      */
 
-     PageInfo<T> queryPageListByExample(Example example, Integer page, Integer rows);
+     PageInfo<T> queryPageListByExample(Example example, Integer page, Integer size);
 }

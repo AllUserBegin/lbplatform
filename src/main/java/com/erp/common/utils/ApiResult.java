@@ -9,8 +9,22 @@ public class ApiResult <T>{
     public ApiResult(){
 
     }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
     private  int code;
+
+
     private T data;
+
+
+
     private String msg;
 
     public static ApiResult Success(){

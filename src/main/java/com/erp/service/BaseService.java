@@ -92,8 +92,8 @@ public abstract class BaseService<T,ID extends Serializable> {
      * @param rows
      * @return
      */
-    public PageInfo<T> queryPageListByExample(Example example, Integer page, Integer rows) {
-        PageHelper.startPage(page, rows, true);// 设置分页参数
+    public PageInfo<T> queryPageListByExample(Example example, Integer page, Integer size) {
+        PageHelper.startPage(page, size, true);// 设置分页参数
         // 查询数据
         List<T> lists = baseMapper.selectByExample(example);
         return new PageInfo<T>(lists);

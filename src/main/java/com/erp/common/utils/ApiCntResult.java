@@ -12,6 +12,15 @@ public class ApiCntResult extends ApiResult {
 
     private long cnt;
 
+
+    public long getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(long cnt) {
+        this.cnt = cnt;
+    }
+
     @Override
     public String toString()
     {

@@ -1,9 +1,9 @@
 package com.erp.shiro;
 
 
-import com.erp.entity.sys.SysUserBean;
+import com.erp.entity.SysUserBean;
 
-import com.erp.service.sys.SysUserService;
+import com.erp.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 
@@ -99,8 +99,6 @@ public class OAuth2Realm extends AuthorizingRealm {
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以在此判断或自定义实现
         return new SimpleAuthenticationInfo(entity.getUserId(), entity.getPassword(), getName());
     }
-
-
 }
 
 

@@ -10,6 +10,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @EnableCaching
 public class JedisPoolFactory {
 
+    private Logger logger = LoggerFactory.getLogger(JedisConfig.class);
 
     @Value("${spring.redis.host}")
     private String host;
