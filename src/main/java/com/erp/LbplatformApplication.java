@@ -10,11 +10,12 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import tk.mybatis.spring.annotation.MapperScan;
 
 
 @SpringBootApplication//用来声明这是启动SpringBoot程序的启动类，必须有
-@MapperScan(basePackages = "com.erp.dao")
+@MapperScan("com.erp.dao")
 public class LbplatformApplication   extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(LbplatformApplication.class, args);

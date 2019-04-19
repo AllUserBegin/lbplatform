@@ -31,7 +31,7 @@ public class UserController {
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ApiResult create(UserAddReq data)
+    public ApiResult create(UserAddReq data) throws  Exception
     {
         UsersBean entity=new UsersBean();
         entity.setUsername(SQLFilter.sqlInject(data.username));

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Example;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单管理
@@ -57,8 +58,7 @@ public class SysMenuController {
     @GetMapping(value ="getMyMenu")
     public  ApiResult getMyMenu(long userid)
     {
-        List<SysMenuBean> list= sysMenuService.MenuList();
-        return ApiResult.Success("操作成功!",list );
+        return ApiResult.Success("操作成功!",sysMenuService.MenuList() );
     }
 
     @ApiOperation(value = "修改")

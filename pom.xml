@@ -44,11 +44,7 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <!--<scope>provided</scope>-->
         </dependency>
-        <!-- Spring Boot redis 依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+
         <!-- 验证码 -->
         <!-- https://mvnrepository.com/artifact/com.google.code.kaptcha/kaptcha -->
         <dependency>
@@ -104,6 +100,12 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- Spring Boot redis 依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
@@ -210,6 +212,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
     </dependencies>

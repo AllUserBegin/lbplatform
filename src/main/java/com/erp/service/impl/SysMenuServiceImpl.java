@@ -1,6 +1,6 @@
 package com.erp.service.impl;
-import com.erp.service.*;
 import com.erp.dao.SysMenuDao;
+import com.erp.service.*;
 import com.erp.entity.SysMenuBean;
 import com.erp.service.BaseService;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,7 +23,7 @@ public class SysMenuServiceImpl extends BaseService<SysMenuBean,Long> implements
         return sysMenuMapper.listAllByUserId(userId);
     }
 
-    public  List<SysMenuBean> MenuList()
+    public List<SysMenuBean> MenuList()
     {
         return sysMenuMapper.MenuList();
     }

@@ -4,7 +4,8 @@ package com.erp.config.shiro;
 import com.erp.config.redis.RedisConfig;
 import com.erp.shiro.OAuth2Realm;
 
-import org.apache.commons.lang3.StringUtils;
+
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -38,7 +39,7 @@ public class ShiroConfig {
      *
      * @return RedisManager
      */
-  /*  private RedisManager redisManager() {
+    private RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         // 缓存时间，单位为秒
         //redisManager.setExpire(febsProperties.getShiro().getExpireIn()); // removed from shiro-redis v3.1.0 api
@@ -53,7 +54,7 @@ public class ShiroConfig {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager());
         return redisSessionDAO;
-    }*/
+    }
 
     @Bean("sessionManager")
     public SessionManager sessionManager(){
@@ -69,12 +70,27 @@ public class ShiroConfig {
     }
 
    @Bean("securityManager")
-    public SecurityManager securityManager(OAuth2Realm oAuth2Realm, SessionManager sessionManager) {
+    public SecurityManager securityManager( SessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(oAuth2Realm);
+        securityManager.setRealm(OAuth2Realm());
         securityManager.setSessionManager(sessionManager);
 
         return securityManager;
+    }
+
+    @Bean
+    public OAuth2Realm OAuth2Realm() {
+        OAuth2Realm myShiroRealm = new OAuth2Realm();
+        //myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        return myShiroRealm;
+    }
+
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
+        //hashedCredentialsMatcher.setHashIterations(1);//散列的次数，比如散列两次，相当于 md5(md5(""));
+        return hashedCredentialsMatcher;
     }
 
         @Bean("shiroFilter")
@@ -89,6 +105,7 @@ public class ShiroConfig {
 
 
             Map<String, String> filterMap = new LinkedHashMap<>();
+
          /*   filterMap.put("/webjars/**", "anon");
             filterMap.put("/druid/**", "anon");
             filterMap.put("/app/**", "anon");

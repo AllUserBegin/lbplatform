@@ -79,13 +79,13 @@ public class SysLoginController {
             return ApiResult.Fail("密码不正确");
         }
         /*String strToken=  TokenGenerator.generateValue(username+passwordmd5);*/
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserId().toString(), passwordmd5);
-        token.setRememberMe(true);//rememberMe cookie 效果是重开浏览器后无需重新登录
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserId().toString(), user.getPassword(),true);
+
         Subject currentUser = SecurityUtils.getSubject();
         try{
-            if (currentUser != null) {
+            /*if (currentUser != null) {
                 currentUser.logout();
-            }
+            }*/
             currentUser.login(token);
             Map<String, String> map= new HashMap<>();
          /*   map.put(SysUserBean.$.userId,user.getUserId().toString());

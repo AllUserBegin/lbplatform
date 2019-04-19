@@ -1,8 +1,6 @@
 package com.erp.common.validator;
 
 
-import com.erp.common.exception.RRException;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -30,7 +28,7 @@ public class ValidatorUtils {
      * @param groups        待校验的组
      * @throws RRException  校验不通过，则报RRException异常
      */
-    public static void validateEntity(Object object, Class<?>... groups)
+/*    public static void validateEntity(Object object, Class<?>... groups)
             throws RRException {
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object, groups);
         if (!constraintViolations.isEmpty()) {
@@ -40,5 +38,5 @@ public class ValidatorUtils {
             }
             throw new RRException(msg.toString());
         }
-    }
+    }*/
 }

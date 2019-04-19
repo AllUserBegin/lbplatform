@@ -23,7 +23,7 @@ public class FilterConfig {
         return registration;
     }
 
-    @Bean
+/*    @Bean
     public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setDispatcherTypes(DispatcherType.REQUEST);
@@ -32,5 +32,5 @@ public class FilterConfig {
         registration.setName("xssFilter");
         registration.setOrder(Integer.MAX_VALUE);
         return registration;
-    }
+    }*/
 }

@@ -4,6 +4,7 @@ import com.erp.common.utils.ApiResult;
 import com.erp.dto.reponse.sys.SysConfigRep;
 import com.erp.dto.request.sys.SysConfigCreateReq;
 import com.erp.dto.request.sys.SysConfigModifyReq;
+
 import com.erp.entity.SysConfigBean;
 import com.erp.service.*;
 
@@ -36,11 +37,13 @@ public class SysConfigController {
 	private SysConfigService sysConfigService;
 
 
+
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @RequiresPermissions("sys:sysconfig:create")
     public ApiResult create(SysConfigCreateReq data)
     {
+
 			SysConfigBean entity=new SysConfigBean();
 
 			sysConfigService.insert(entity);
@@ -65,9 +68,9 @@ public class SysConfigController {
     @ApiOperation(value = "删除")
     @RequestMapping(value = "/del", method = RequestMethod.GET)
     @RequiresPermissions("sys:sysconfig:del")
-    public ApiResult del(Long id)
+    public ApiResult del(Integer id)
     {
-			sysConfigService.deleteByPrimaryKey(id);
+        sysConfigService.deleteByPrimaryKey(Long.parseLong(id.toString()));
         return ApiResult.Success("删除成功!");
     }
 

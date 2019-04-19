@@ -1,25 +1,40 @@
 package com.erp.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+
+@Table(name = "sys_user")
 public class SysUserBean implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_Id")
     private Long userId;
 
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "salt")
     private String salt;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "mobile")
     private String mobile;
 
+    @Column(name = "status")
     private Byte status;
 
+    @Column(name = "dept_Id")
     private Long deptId;
 
+    @Column(name = "createtime")
     private Date createTime;
 
     private static final long serialVersionUID = 1L;

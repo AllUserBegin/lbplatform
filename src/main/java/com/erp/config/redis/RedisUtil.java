@@ -1,5 +1,7 @@
 package com.erp.config.redis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class RedisUtil{
 
     @Autowired
     private JedisPool jedisPool;
+
+    private  final Logger log = LoggerFactory.getLogger(RedisUtil.class);
+
 
     /**
      * <p>

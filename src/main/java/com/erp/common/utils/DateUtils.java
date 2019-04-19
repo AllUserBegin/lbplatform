@@ -6,7 +6,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -144,7 +144,6 @@ public class DateUtils {
      * @return 加/减几月后的日期
      */
     public static Date addDateMonths(Date date, int months) {
-        Date date
         DateTime dateTime = new DateTime(date);
         return dateTime.plusMonths(months).toDate();
     }

@@ -2,6 +2,8 @@ package com.erp.entity;
 
 import java.util.Date;
 import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -17,6 +19,7 @@ import javax.persistence.*;
  * @date 2018-11-29 11:16:00
  */
 @Data
+@ToString
 @Table(name = "sys_menu")
 public class SysMenuBean implements Serializable {
     private static final long serialVersionUID = 1L;

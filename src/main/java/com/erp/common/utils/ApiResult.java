@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class ApiResult <T>{
+
     public ApiResult(){
 
     }

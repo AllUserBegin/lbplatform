@@ -38,13 +38,13 @@ public class OAuth2Realm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
-        Long userId = (Long) principals.getPrimaryPrincipal();
+
 
         //SysUserBean entity = sysUserService.findById(userId);
         //把principals放session中 key=userId value=principals
         //SecurityUtils.getSubject().getSession().setAttribute(String.valueOf(entity.getUserId()),SecurityUtils.getSubject().getPrincipals());
 
-
+        Long userId = (Long) principals.getPrimaryPrincipal();
 
         Session  session=  SecurityUtils.getSubject().getSession();
         if(null==session)
@@ -54,8 +54,8 @@ public class OAuth2Realm extends AuthorizingRealm {
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         Set<String> list=sysUserService.findPermissions(userId,true);
-
         //authorizationInfo.setRoles(sysUserService.findRoles(username));
+        list.add("sys:sysconfig:del");
         authorizationInfo.setStringPermissions(list);
 
         return authorizationInfo;
@@ -78,6 +78,14 @@ public class OAuth2Realm extends AuthorizingRealm {
         if(tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()){
             throw new IncorrectCredentialsException("token失效，请重新登录");
         }*/
+
+
+       /* if(redisUtil.exists(RedisKeys.getUserLoginInfo(session.getId().toString()))==false)
+        {
+            throw new LockedAccountException("登录超时，请重新登录!");
+        }*/
+
+
         String userId=token.getUsername();
         SysUserBean entity = sysUserService.findById(Long.parseLong(userId));
         //账号不存在
@@ -90,12 +98,6 @@ public class OAuth2Realm extends AuthorizingRealm {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
         Session session = SecurityUtils.getSubject().getSession();
-
-       /* if(redisUtil.exists(RedisKeys.getUserLoginInfo(session.getId().toString()))==false)
-        {
-            throw new LockedAccountException("登录超时，请重新登录!");
-        }*/
-
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以在此判断或自定义实现
         return new SimpleAuthenticationInfo(entity.getUserId(), entity.getPassword(), getName());
     }

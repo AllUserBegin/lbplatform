@@ -22,6 +22,9 @@ spring:
         min-idle: 0
     password: 123456
     block-when-exhausted: true  #连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true
+mybatis:
+  mapper-locations: classpath:mapper/*.xml #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.erp.entity # 注意：对应实体类的路径
 
 
   freemarker:
@@ -34,3 +37,6 @@ lbplatform:
     open: true  # 是否开启redis缓存  true开启   false关闭
   shiro:
     redis: true # true表示shiro session存到redis里，需要开启redis，才会生效【分布式场景】
+  Exception:
+    overtime: 3000 #
+

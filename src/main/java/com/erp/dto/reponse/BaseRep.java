@@ -2,6 +2,7 @@ package com.erp.dto.reponse;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class BaseRep {
@@ -20,6 +21,7 @@ public class BaseRep {
     @ApiModelProperty(name = "modifier", value = "修改者名称")
     private String modifier;
 
+    @Getter
     @ApiModelProperty(name = "modifyTime", value = "修改时间")
     private java.util.Date modifyTime;
 }

@@ -1,13 +1,11 @@
 package com.erp.config.shiro;
 
-import com.erp.common.exception.RRException;
-
 import java.security.MessageDigest;
 import java.util.UUID;
 
 public class TokenGenerator {
 
-    public static String generateValue() {
+    public static String generateValue()throws  Exception {
         return generateValue(UUID.randomUUID().toString());
     }
 
@@ -25,7 +23,7 @@ public class TokenGenerator {
         return r.toString();
     }
 
-    public static String generateValue(String param) {
+    public static String generateValue(String param) throws  Exception {
         try {
             MessageDigest algorithm = MessageDigest.getInstance("MD5");
             algorithm.reset();
@@ -33,7 +31,7 @@ public class TokenGenerator {
             byte[] messageDigest = algorithm.digest();
             return toHexString(messageDigest);
         } catch (Exception e) {
-            throw new RRException("生成Token失败", e);
+            throw new Exception("生成Token失败");
         }
     }
 }

@@ -60,10 +60,6 @@ public interface IService<T,ID extends Serializable> {
     /**
      * 自定义查询条件，分页查询
      *
-     * @param example
-     * @param page
-     * @param rows
-     * @return
      */
 
      PageInfo<T> queryPageListByExample(Example example, Integer page, Integer size);
